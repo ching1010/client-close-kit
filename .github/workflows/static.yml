@@ -23,12 +23,32 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Assemble landing page
+        run: |
+          mkdir -p _site
+          if [ -d parts ] && ls parts/part-*.b64 >/dev/null 2>&1; then
+            cat parts/part-*.b64 | tr -d '\n' | base64 -d > _site/index.html
+          elif [ -f index.html ]; then
+            cp index.html _site/
+            if [ -f gumroad-cover.png ]; then cp gumroad-cover.png _site/; fi
+            if [ -d pngparts ]; then
+              cat pngparts/p*.b64 | tr -d '\n' | base64 -d > _site/gumroad-cover.png
+            fi
+          else
+            echo "No landing content found" >&2
+            exit 1
+          fi
+          touch _site/.nojekyll
+          ls -la _site
+          head -c 120 _site/index.html; echo
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
