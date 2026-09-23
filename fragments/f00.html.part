@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Client Close Kit — a practical client workflow for freelancers by Leo Ching.">
+  <meta name="theme-color" content="#f6f4ef">
+  <title>Client Close Kit — close projects with clarity</title>
+  <style>
+    :root {
+      --ink: #17211f;
+      --muted: #596764;
+      --paper: #f6f4ef;
+      --card: #fffdf8;
+      --line: #dfe3dc;
+      --teal: #176b62;
+      --teal-dark: #0e514b;
+      --coral: #ef765f;
+      --yellow: #f4d56f;
+      --shadow: 0 18px 50px rgba(23, 33, 31, .10);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .site-header { padding: 24px 0; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; letter-spacing: -.03em; }
+    .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; color: var(--ink); background: var(--yellow); font-weight: 900; }
+    .nav-link { color: var(--muted); font-size: .94rem; text-decoration: none; }
+    .nav-link:hover { color: var(--teal); }
+    .hero { padding: 58px 0 88px; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: clamp(40px, 7vw, 96px); }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--teal); font-size: .8rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 24px; height: 2px; background: var(--coral); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 650px; margin-bottom: 22px; font-size: clamp(2.7rem, 6vw, 5.5rem); line-height: .98; letter-spacing: -.07em; }
+    .hero-copy { max-width: 580px; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); }
+    .hero-copy strong { color: var(--ink); }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
+    .button { display: inline-flex; min-height: 50px; align-items: center; justify-content: center; padding: 0 21px; border: 1px solid transparent; border-radius: 999px; font-weight: 800; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: #fff; background: var(--teal); box-shadow: 0 10px 22px rgba(23, 107, 98, .2); }
+    .button-primary:hover { background: var(--teal-dark); box-shadow: 0 13px 26px rgba(23, 107, 98, .28); }
