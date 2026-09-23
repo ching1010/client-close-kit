@@ -16,7 +16,7 @@ jobs:
 
       - name: Rebuild cover image
         run: |
-          tr -d '\n\r' < pngparts/p*.b64 | base64 --decode > gumroad-cover.png
+          { cat fixedchunks/p00a.b64 fixedchunks/p00b.b64 fixedchunks/p00c.b64; cat pngparts/p01.b64; cat fixedchunks/p02a.b64 fixedchunks/p02b.b64 fixedchunks/p02c.b64; cat pngparts/p03.b64 pngparts/p04.b64 pngparts/p05.b64 pngparts/p06.b64 pngparts/p07.b64 pngparts/p08.b64 pngparts/p09.b64 pngparts/p10.b64; cat fixedchunks/p11a.b64 fixedchunks/p11b.b64 fixedchunks/p11c.b64; cat pngparts/p12.b64; } | tr -d '\n\r' | base64 --decode > gumroad-cover.png
           test "$(stat -c%s gumroad-cover.png)" = 27178
 
       - name: Check out gh-pages
@@ -35,6 +35,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Cover already up to date"
           else
-            git commit -m "Add landing cover image"
+            git commit -m "Fix landing cover image"
             git push origin HEAD:gh-pages
           fi
