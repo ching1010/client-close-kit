@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Client Close Kit — a practical client workflow for freelancers by Leo Ching.">
+  <meta name="theme-color" content="#f6f4ef">
+  <title>Client Close Kit — close projects with clarity</title>
+  <style>
+    :root {
+      --ink: #17211f;
+      --muted: #596764;
+      --paper: #f6f4ef;
+      --card: #fffdf8;
+      --line: #dfe3dc;
+      --teal: #176b62;
+      --teal-dark: #0e514b;
+      --coral: #ef765f;
+      --yellow: #f4d56f;
+      --shadow: 0 18px 50px rgba(23, 33, 31, .10);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .site-header { padding: 24px 0; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; letter-spacing: -.03em; }
+    .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; color: var(--ink); background: var(--yellow); font-weight: 900; }
+    .nav-link { color: var(--muted); font-size: .94rem; text-decoration: none; }
+    .nav-link:hover { color: var(--teal); }
+    .hero { padding: 58px 0 88px; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: clamp(40px, 7vw, 96px); }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--teal); font-size: .8rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 24px; height: 2px; background: var(--coral); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 650px; margin-bottom: 22px; font-size: clamp(2.7rem, 6vw, 5.5rem); line-height: .98; letter-spacing: -.07em; }
+    .hero-copy { max-width: 580px; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); }
+    .hero-copy strong { color: var(--ink); }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
+    .button { display: inline-flex; min-height: 50px; align-items: center; justify-content: center; padding: 0 21px; border: 1px solid transparent; border-radius: 999px; font-weight: 800; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: #fff; background: var(--teal); box-shadow: 0 10px 22px rgba(23, 107, 98, .2); }
+    .button-primary:hover { background: var(--teal-dark); box-shadow: 0 13px 26px rgba(23, 107, 98, .28); }
+    .button-secondary { color: var(--teal-dark); border-color: #b8cbc4; background: transparent; }
+    .button-secondary:hover { background: #e7efea; }
+    .small-note { margin: 14px 0 0; color: var(--muted); font-size: .84rem; }
+    .cover-wrap { position: relative; }
+    .cover-wrap::before { content: ""; position: absolute; z-index: 0; inset: 9% -7% -9% 8%; border-radius: 34px; background: var(--yellow); transform: rotate(5deg); }
+    .cover-card { position: relative; z-index: 1; overflow: hidden; border: 1px solid #e2e3d9; border-radius: 22px; background: var(--card); box-shadow: var(--shadow); }
+    .cover-card img { display: block; width: 100%; height: auto; }
+    .cover-caption { display: flex; justify-content: space-between; gap: 18px; padding: 15px 18px; color: var(--muted); font-size: .84rem; }
+    .cover-caption strong { color: var(--ink); }
+    .section { padding: 88px 0; }
+    .section-tint { background: #e7efea; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 34px; }
+    h2 { max-width: 650px; margin-bottom: 0; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.03; letter-spacing: -.055em; }
+    .section-heading p { max-width: 410px; margin-bottom: 4px; color: var(--muted); }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .feature { padding: 25px; border: 1px solid rgba(23, 33, 31, .11); border-radius: 18px; background: rgba(255, 253, 248, .7); }
+    .feature-number { display: grid; place-items: center; width: 30px; height: 30px; margin-bottom: 29px; border-radius: 50%; color: var(--teal-dark); background: var(--yellow); font-size: .8rem; font-weight: 900; }
+    .feature h3 { margin-bottom: 8px; font-size: 1.15rem; letter-spacing: -.02em; }
+    .feature p { margin-bottom: 0; color: var(--muted); font-size: .96rem; }
+    .included-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 70px; align-items: start; }
+    .included-intro p { max-width: 420px; color: var(--muted); }
+    .format-pill { display: inline-block; margin-top: 14px; padding: 7px 11px; border-radius: 8px; color: var(--teal-dark); background: #d8e9e2; font-size: .82rem; font-weight: 800; }
+    .items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .items li { display: flex; align-items: start; gap: 11px; padding: 15px; border-bottom: 1px solid var(--line); font-weight: 700; }
+    .items li::before { content: "✓"; flex: 0 0 auto; color: var(--coral); font-weight: 900; }
+    .pricing { display: grid; grid-template-columns: 1fr .9fr; gap: 55px; align-items: center; }
+    .price-card { padding: 34px; border-radius: 22px; color: #fff; background: var(--teal); box-shadow: var(--shadow); }
+    .price-label { margin-bottom: 8px; color: #b8dfd2; font-size: .85rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .price { margin-bottom: 16px; font-size: 3.5rem; line-height: 1; letter-spacing: -.06em; }
+    .price-card p { color: #d9eee7; }
+    .price-card .button { color: var(--ink); background: var(--yellow); }
+    .price-card .button:hover { background: #ffe389; }
+    .honest { padding-left: 25px; border-left: 3px solid var(--coral); }
+    .honest p { color: var(--muted); }
+    .honest a { color: var(--teal-dark); font-weight: 800; }
+    .footer { padding: 30px 0 42px; color: var(--muted); font-size: .9rem; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .footer a { color: var(--teal-dark); font-weight: 700; text-decoration: none; }
+    :focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+    @media (max-width: 800px) {
+      .hero { padding-top: 34px; }
+      .hero-grid, .included-grid, .pricing { grid-template-columns: 1fr; gap: 45px; }
+      .hero-grid { gap: 45px; }
+      .section-heading { display: block; }
+      .section-heading p { margin-top: 16px; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 28px, 1120px); }
+      .site-header { padding: 18px 0; }
+      .nav-link { display: none; }
+      h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); }
+      .hero { padding-bottom: 65px; }
+      .section { padding: 65px 0; }
+      .feature-grid, .items { grid-template-columns: 1fr; }
+      .feature-number { margin-bottom: 20px; }
+      .price-card { padding: 26px; }
+      .footer-inner { align-items: start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="Client Close Kit home"><span class="brand-mark">C</span><span>Client Close Kit</span></a>
+      <a class="nav-link" href="#included">What is inside →</a>
+    </div>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">For independent freelancers</div>
+          <h1>Close the work. Start it well.</h1>
+          <p class="hero-copy">A practical, ready-to-edit client workflow by <strong>Leo Ching</strong> — from the first discovery call to a clear proposal, signed scope, and smooth onboarding.</p>
+          <div class="actions">
+            <a class="button button-primary" href="https://chingleo.gumroad.com/l/client-close-kit">Get the kit · $39</a>
+            <a class="button button-secondary" href="https://chingleo.gumroad.com/l/discovery-call-script">Get the free script</a>
+          </div>
+          <p class="small-note">Useful templates, not a promise of instant results.</p>
+        </div>
+        <div class="cover-wrap">
+          <div class="cover-card">
+            <img src="gumroad-cover.png" alt="Client Close Kit cover" width="1200" height="900">
+            <div class="cover-caption"><strong>Client Close Kit</strong><span>by Leo Ching</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section section-tint">
+      <div class="wrap">
+        <div class="section-heading">
+          <h2>A calmer client process, in one place.</h2>
+          <p>Skip the blank-page feeling and use a workflow you can adapt to the way you actually work.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature"><div class="feature-number">01</div><h3>Ask better questions</h3><p>Use a focused discovery script to learn what the client needs, what matters, and whether the project is a fit.</p></article>
+          <article class="feature"><div class="feature-number">02</div><h3>Scope with clarity</h3><p>Turn a useful conversation into a proposal and statement of work that make responsibilities easier to understand.</p></article>
+          <article class="feature"><div class="feature-number">03</div><h3>Start professionally</h3><p>Set expectations early with onboarding steps, client emails, invoice guidance, and simple project trackers.</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="included">
+      <div class="wrap included-grid">
+        <div class="included-intro">
+          <div class="eyebrow">Inside the kit</div>
+          <h2>Everything you need to move from “interested” to “underway”.</h2>
+          <p>Edit the wording, add your own process, and make these documents yours. The kit is designed to be practical rather than precious.</p>
+          <span class="format-pill">Docs / Sheets · Word / Excel</span>
+        </div>
+        <ul class="items">
+          <li>Discovery call script</li>
+          <li>Proposal template</li>
+          <li>Statement of Work (SOW)</li>
+          <li>Client onboarding guide</li>
+          <li>Client email templates</li>
+          <li>Invoice template</li>
+          <li>Project trackers</li>
+          <li>Editable, reusable workflow</li>
+        </ul>
+      </div>
+    </section>
+    <section class="section section-tint">
+      <div class="wrap pricing">
+        <div>
+          <div class="eyebrow">A small investment in a clearer process</div>
+          <h2>Make your next client handoff feel considered.</h2>
+          <div class="honest">
+            <p>No inflated claims, fake testimonials, or mystery bonuses. Just a collection of editable templates for freelancers who want a more consistent way to handle client work.</p>
+            <p>Want to start smaller? <a href="https://chingleo.gumroad.com/l/discovery-call-script">Download the free Discovery Call Script</a>.</p>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="price-label">Client Close Kit</div>
+          <div class="price">$39</div>
+          <p>One practical toolkit for discovery, proposals, scope, onboarding, and follow-up.</p>
+          <a class="button" href="https://chingleo.gumroad.com/l/client-close-kit">Get the Client Close Kit →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span>© Leo Ching · Client Close Kit</span>
+      <a href="https://dev.to/ching_leo_9deee65f1d55e77/free-30-minute-discovery-call-script-for-us-freelancers-agenda-7-questions-walk-away-flags-eo7">Read the discovery call article →</a>
+    </div>
+  </footer>
+</body>
+</html>

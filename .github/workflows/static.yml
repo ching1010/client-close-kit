@@ -26,17 +26,23 @@ jobs:
       - name: Assemble landing page
         run: |
           mkdir -p _site
-          if [ -d parts ] && ls parts/part-*.b64 >/dev/null 2>&1; then
-            cat parts/part-*.b64 | tr -d '\n' | base64 -d > _site/index.html
+          if [ -d fragments ] && ls fragments/f*.html.part >/dev/null 2>&1; then
+            # Prefer complete index.html over incomplete fragments
+            if [ -f index.html ]; then
+              cp index.html _site/
+            else
+              cat fragments/f*.html.part > _site/index.html
+            fi
           elif [ -f index.html ]; then
             cp index.html _site/
-            if [ -f gumroad-cover.png ]; then cp gumroad-cover.png _site/; fi
-            if [ -d pngparts ]; then
-              cat pngparts/p*.b64 | tr -d '\n' | base64 -d > _site/gumroad-cover.png
-            fi
           else
             echo "No landing content found" >&2
             exit 1
+          fi
+          if [ -d pngparts ]; then
+            cat pngparts/p*.b64 | tr -d '\n' | base64 -d > _site/gumroad-cover.png
+          elif [ -f gumroad-cover.png ]; then
+            cp gumroad-cover.png _site/
           fi
           touch _site/.nojekyll
           ls -la _site
