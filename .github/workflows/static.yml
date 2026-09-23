@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -16,29 +16,14 @@ concurrency:
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Assemble landing page
+      - name: Prepare site
         run: |
           mkdir -p _site
-          if [ -d fragments ] && ls fragments/f*.html.part >/dev/null 2>&1; then
-            # Prefer complete index.html over incomplete fragments
-            if [ -f index.html ]; then
-              cp index.html _site/
-            else
-              cat fragments/f*.html.part > _site/index.html
-            fi
-          elif [ -f index.html ]; then
-            cp index.html _site/
-          else
-            echo "No landing content found" >&2
-            exit 1
-          fi
+          cp index.html _site/
           if [ -d pngparts ]; then
             cat pngparts/p*.b64 | tr -d '\n' | base64 -d > _site/gumroad-cover.png
           elif [ -f gumroad-cover.png ]; then
@@ -46,15 +31,9 @@ jobs:
           fi
           touch _site/.nojekyll
           ls -la _site
-          head -c 120 _site/index.html; echo
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          enablement: true
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '_site'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          force_orphan: true
