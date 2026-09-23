@@ -24,13 +24,26 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/
-          if [ -d pngparts ]; then
-            cat pngparts/p*.b64 | tr -d '\n' | base64 -d > _site/gumroad-cover.png
+          if [ -d pngparts ] && ls pngparts/p*.b64 >/dev/null 2>&1; then
+            cat pngparts/p*.b64 | tr -d '\n' | base64 -d > _site/gumroad-cover.png || true
           elif [ -f gumroad-cover.png ]; then
             cp gumroad-cover.png _site/
           fi
           touch _site/.nojekyll
           ls -la _site
+      - name: Try enable Pages (may no-op if already on or token lacks admin)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api -X POST "repos/${{ github.repository }}/pages" \
+            -f build_type=legacy \
+            -f source[branch]=gh-pages \
+            -f source[path]=/ || true
+          gh api -X PUT "repos/${{ github.repository }}/pages" \
+            -f build_type=legacy \
+            -f source[branch]=gh-pages \
+            -f source[path]=/ || true
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
