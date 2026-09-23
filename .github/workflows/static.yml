@@ -24,11 +24,8 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/
-          if [ -d pngparts ] && ls pngparts/p*.b64 >/dev/null 2>&1; then
-            cat pngparts/p*.b64 | tr -d '\n' | base64 -d > _site/gumroad-cover.png || true
-          elif [ -f gumroad-cover.png ]; then
-            cp gumroad-cover.png _site/
-          fi
+          { cat fixedchunks/p00a.b64; cut -c1-497 fixedchunks/p00b1.b64; cat fixedchunks/p00b1tail.b64; cut -c1-269 fixedchunks/p00b2.b64; cat fixedchunks/p00b2tail.b64 fixedchunks/p00c.b64; cat pngparts/p01.b64; cat fixedchunks/p02a.b64 fixedchunks/p02b.b64 fixedchunks/p02c.b64; cat pngparts/p03.b64 pngparts/p04.b64 pngparts/p05.b64 pngparts/p06.b64 pngparts/p07.b64 pngparts/p08.b64 pngparts/p09.b64 pngparts/p10.b64; cat fixedchunks/p11a.b64 fixedchunks/p11b.b64 fixedchunks/p11c1.b64 fixedchunks/p11c2.b64; cat pngparts/p12.b64; } | tr -d '\n\r' | base64 -d > _site/gumroad-cover.png
+          test "$(stat -c%s _site/gumroad-cover.png)" = 27178
           touch _site/.nojekyll
           ls -la _site
       - name: Try enable Pages (may no-op if already on or token lacks admin)
@@ -36,14 +33,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh api -X POST "repos/${{ github.repository }}/pages" \
-            -f build_type=legacy \
-            -f source[branch]=gh-pages \
-            -f source[path]=/ || true
-          gh api -X PUT "repos/${{ github.repository }}/pages" \
-            -f build_type=legacy \
-            -f source[branch]=gh-pages \
-            -f source[path]=/ || true
+          gh api -X POST "repos/${{ github.repository }}/pages" -f build_type=legacy -f source[branch]=gh-pages -f source[path]=/ || true
+          gh api -X PUT "repos/${{ github.repository }}/pages" -f build_type=legacy -f source[branch]=gh-pages -f source[path]=/ || true
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
